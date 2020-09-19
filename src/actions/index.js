@@ -3,6 +3,11 @@ export const addEntry = payload => ({
     payload
 })
 
+export const editEntry = payload => ({
+    type: "EDIT_ENTRY",
+    payload
+})
+
 export const deleteEntry = payload => ({
     type: "DELETE_ENTRY",
     payload

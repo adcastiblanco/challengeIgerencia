@@ -1,18 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux'
 
 import {deleteEntry} from '../../actions'
 
-import {FaTrashAlt} from 'react-icons/fa'
+import {Table, HeadData, BodyData, RowTable, AddButton, NoRegistersTitle} from './styles'
+import Modal from '../Modal'
 
-import {Table, HeadData, BodyData, RowTable} from './styles'
+import {FaTrashAlt} from 'react-icons/fa'
+import {FaEdit} from 'react-icons/fa'
+
 
 const RecordTable = ({entries, deleteEntry}) => {
+
+    const [isOpenModal, setIsOpenModal] = useState(false)
+    const [dataModal, setDataModal] = useState({})
+
+    const handleOpenModal = (id, year, type, description) => {
+        setIsOpenModal(true)
+        setDataModal({id, year, type, description})
+    }
+
     const handleDeleteEntry = (idEntry) =>{
         deleteEntry(idEntry)
     }
+
+    if(entries.length === 0){
+        return (
+         <>
+            <NoRegistersTitle>No tienes registros</NoRegistersTitle>
+            <AddButton to="/add-levers-and-objectives">¡Agrega uno nuevo!</AddButton>
+        </>
+        )
+    }
     return (
-        <section id="contain">
+        <>
             <h2>Todos los registros</h2>
             <h4>Filtrar registros por:</h4>
             <div>
@@ -44,13 +65,14 @@ const RecordTable = ({entries, deleteEntry}) => {
                         <BodyData>{item.year}</BodyData>
                         <BodyData>{item.type}</BodyData>
                         <BodyData>{item.description}</BodyData>
-                        <BodyData>Edit</BodyData>
+                        <BodyData onClick={() => handleOpenModal(item.id, item.year, item.type, item.description)} className="edit"><FaEdit /></BodyData>
                         <BodyData onClick={() => handleDeleteEntry(item.id)} className="trash"><FaTrashAlt /></BodyData>
                     </RowTable>
                 ))}
                 </tbody>
+                <Modal isOpen={isOpenModal} handleModal={setIsOpenModal} id={dataModal.id} year={dataModal.year} type={dataModal.type} description={dataModal.description}/>
             </Table>
-        </section >
+        </>
     );
 }
 

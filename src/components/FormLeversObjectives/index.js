@@ -57,12 +57,12 @@ const FormLeversObjectives = ({entries, addEntry}) => {
                     <QuestionLabel>¿De que tipo es?</QuestionLabel>
                     <ContainerFlex>
                         <TypeContainer>
-                            <input required type="radio" id="lever" name="type" htmlFor="type" value="lever" onChange={handleChange}/>
-                            <label htmlFor="lever">Palanca</label>
+                            <input required type="radio" id="palanca" name="type" htmlFor="type" value="Palanca" onChange={handleChange}/>
+                            <label htmlFor="palanca">Palanca</label>
                         </TypeContainer>
                         <TypeContainer>
-                        <input required type="radio" id="objective" name="type" htmlFor="type" value="objective" onChange={handleChange}/>
-                        <label htmlFor="objective">Objetivo</label>
+                        <input required type="radio" id="objetivo" name="type" htmlFor="type" value="Objetivo" onChange={handleChange}/>
+                        <label htmlFor="objetivo">Objetivo</label>
                     </TypeContainer>
                     </ContainerFlex>
                 </RegisterField>
