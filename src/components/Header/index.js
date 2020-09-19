@@ -32,11 +32,16 @@ const Header = () => {
         </MenuList>
              :
              <MenuList>
+                 {window.location.pathname === "/levers-and-objectives" ? 
                     <MenuItem>
-                    <AnchorItem to="/">Salir</AnchorItem>
+                        <AnchorItem to="/add-levers-and-objectives">Añadir registros</AnchorItem>
+                    </MenuItem> :
+                     <MenuItem>
+                        <AnchorItem to="/levers-and-objectives">Ver Registros</AnchorItem>
                     </MenuItem>
+                }
                     <MenuItem>
-                    <AnchorItem to="/">Ver Registros</AnchorItem>
+                        <AnchorItem to="/">Salir</AnchorItem>
                     </MenuItem>
             </MenuList>
         }
