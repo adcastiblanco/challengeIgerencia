@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { FooterContainer } from './styles';
+import { FooterContainer, AuthorInformation } from './styles';
 
 const Footer = () => (
   <FooterContainer>
     <p>Igerencia</p>
-    <p>Angel Castiblanco</p>
+    <AuthorInformation>
+      <p>Angel Castiblanco</p>
+    </AuthorInformation>
   </FooterContainer>
 );
 

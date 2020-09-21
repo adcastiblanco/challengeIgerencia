@@ -25,34 +25,3 @@ export const AddButton = styled(Link)`
 export const NoRegistersTitle = styled.h2`
   text-align: center;
 `;
-
-export const Table = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  margin: 0 auto;
-`;
-
-export const RowTable = styled.tr`
-  &:nth-child(even) {
-    background-color: #dddddd;
-  }
-`;
-
-export const HeadData = styled.th`
-  padding: 2% 3%;
-  text-align: left;
-  box-sizing: border-box;
-`;
-
-export const BodyData = styled.td`
-  padding: 2% 3%;
-  text-align: left;
-  box-sizing: border-box;
-  &.trash,
-  &.edit {
-    cursor: pointer;
-    text-align: center;
-    color: #222831;
-    font-size: 1.2em;
-  }
-`;

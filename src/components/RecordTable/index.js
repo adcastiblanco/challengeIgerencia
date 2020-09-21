@@ -5,31 +5,23 @@ import { deleteEntry } from '../../actions';
 
 import Swal from 'sweetalert2';
 
-import {
-  Table,
-  HeadData,
-  BodyData,
-  RowTable,
-  AddButton,
-  NoRegistersTitle,
-} from './styles';
-import Modal from '../Modal';
+import { AddButton, NoRegistersTitle } from './styles';
 
-import { FaTrashAlt } from 'react-icons/fa';
-import { FaEdit } from 'react-icons/fa';
+import FilterTable from '../FilterTable';
+import TableFields from '../TableFields';
 
 const RecordTable = ({ entries, deleteEntry }) => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [dataModal, setDataModal] = useState({});
-  const [dataEntries, setDataEntries] = useState([]);
-  const [dataFilter, setDataFilter] = useState([]);
-  const [dataForm, setDataForm] = useState({ type: 'none', year: 'none' });
+  const [entriesData, setEntriesData] = useState(entries); // All entries
+  const [filteredRecords, setFilteredRecords] = useState([]); // Entries filtered of form
+  const [dataForm, setDataForm] = useState({ type: 'none', year: 'none' }); // data form of filter
 
-  let printedEntries = dataFilter.length !== 0 ? dataFilter : dataEntries;
+  // variable that stores the entries to be displayed on the screen
+  let printedEntries =
+    filteredRecords.length !== 0 ? filteredRecords : entriesData;
 
   useEffect(() => {
-    setDataEntries(entries);
-    printedEntries = dataFilter.length !== 0 ? dataFilter : dataEntries;
+    printedEntries =
+      filteredRecords.length !== 0 ? filteredRecords : entriesData;
   }, []);
 
   const handleChange = (e) => {
@@ -39,16 +31,11 @@ const RecordTable = ({ entries, deleteEntry }) => {
     });
   };
 
-  const handleOpenModal = (id, year, type, description) => {
-    setIsOpenModal(true);
-    setDataModal({ id, year, type, description });
-  };
-
   const handleDeleteEntry = (idEntry) => {
-    printedEntries = printedEntries.filter((item) => idEntry !== item.id);
-    let remainingEntries = dataEntries.filter((item) => idEntry !== item.id);
-    setDataEntries(remainingEntries);
-    setDataFilter(printedEntries);
+    printedEntries = printedEntries.filter((item) => idEntry !== item.id); // Delete entries of entries displayed in screen
+    let remainingEntries = entriesData.filter((item) => idEntry !== item.id); // Delete entries of all entries
+    setEntriesData(remainingEntries);
+    setFilteredRecords(printedEntries);
     deleteEntry(idEntry);
   };
 
@@ -66,33 +53,33 @@ const RecordTable = ({ entries, deleteEntry }) => {
         ? 'Print Beetwen'
         : 'default';
 
-    let filteredEntries = [];
+    let endResult = [];
     switch (filterConditionals) {
       case 'Print Types':
-        filteredEntries = entries.filter((item) => item.type === type);
-        setDataFilter(filteredEntries);
+        endResult = entries.filter((item) => item.type === type);
+        setFilteredRecords(endResult);
         break;
 
       case 'Print Years':
-        filteredEntries = entries.filter((item) => item.year == year);
-        setDataFilter(filteredEntries);
+        endResult = entries.filter((item) => item.year == year);
+        setFilteredRecords(endResult);
         break;
 
       case 'Print Beetwen':
-        filteredEntries = entries.filter(
+        endResult = entries.filter(
           (item) => item.type === type && item.year == year
         );
-        setDataFilter(filteredEntries);
+        setFilteredRecords(endResult);
         break;
 
       case 'Print All':
-        setDataFilter([]);
+        setFilteredRecords([]);
         break;
 
       default:
         break;
     }
-    if (filteredEntries.length === 0) {
+    if (endResult.length === 0) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -101,90 +88,21 @@ const RecordTable = ({ entries, deleteEntry }) => {
     }
   };
 
-  if (printedEntries.length === 0) {
+  if (printedEntries.length !== 0) {
     return (
       <>
-        <NoRegistersTitle>No tienes registros</NoRegistersTitle>
-        <AddButton to="/add-levers-and-objectives">
-          ¡Agrega uno nuevo!
-        </AddButton>
+        <FilterTable handleChange={handleChange} handleSubmit={handleSubmit} />
+        <TableFields
+          printedEntries={printedEntries}
+          handleDeleteEntry={handleDeleteEntry}
+        />
       </>
     );
   }
   return (
     <>
-      <h2>Todos los registros</h2>
-      <h4>Filtrar registros por:</h4>
-      <div>
-        <label>Tipo:</label>
-        <form onSubmit={handleSubmit}>
-          <select name="type" onChange={handleChange}>
-            <option value="none">Ninguno</option>
-            <option value="Objetivo">Objetivo</option>
-            <option value="Palanca">Palanca</option>
-          </select>
-          <label htmlFor="year">Año:</label>
-          <input
-            id="year"
-            name="year"
-            onChange={handleChange}
-            type="number"
-            placeholder="YYYY"
-            min="2020"
-            max="2100"
-          />
-          <button type="submit">Buscar</button>
-        </form>
-      </div>
-      <Table>
-        <thead>
-          <RowTable>
-            <HeadData>id</HeadData>
-            <HeadData>Año</HeadData>
-            <HeadData>Tipo</HeadData>
-            <HeadData>Descripción</HeadData>
-            <HeadData>Editar</HeadData>
-            <HeadData>Eliminar</HeadData>
-          </RowTable>
-        </thead>
-        <tbody>
-          {printedEntries.map((item) => (
-            <RowTable key={item.id}>
-              <BodyData>{item.id}</BodyData>
-              <BodyData>{item.year}</BodyData>
-              <BodyData>{item.type}</BodyData>
-              <BodyData>{item.description}</BodyData>
-              <BodyData
-                onClick={() =>
-                  handleOpenModal(
-                    item.id,
-                    item.year,
-                    item.type,
-                    item.description
-                  )
-                }
-                className="edit"
-              >
-                <FaEdit />
-              </BodyData>
-              <BodyData
-                onClick={() => handleDeleteEntry(item.id)}
-                className="trash"
-              >
-                <FaTrashAlt />
-              </BodyData>
-            </RowTable>
-          ))}
-        </tbody>
-        <Modal
-          isOpen={isOpenModal}
-          handleModal={setIsOpenModal}
-          id={dataModal.id}
-          year={dataModal.year}
-          type={dataModal.type}
-          description={dataModal.description}
-        />
-      </Table>
+      <NoRegistersTitle>No tienes registros</NoRegistersTitle>
+      <AddButton to="/add-levers-and-objectives">¡Agrega uno nuevo!</AddButton>
     </>
   );
 };

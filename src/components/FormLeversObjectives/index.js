@@ -21,7 +21,9 @@ const FormLeversObjectives = ({ entries, addEntry }) => {
   const handleChange = (e) => {
     let nextId = () => {
       let idsResult = entries.map((item) => item.id);
-      let organizedIds = idsResult.sort();
+      let organizedIds = idsResult.sort(function (a, b) {
+        return a - b;
+      });
       let endId = organizedIds[organizedIds.length - 1] + 1;
       return endId;
     };

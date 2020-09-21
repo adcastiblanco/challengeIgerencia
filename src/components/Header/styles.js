@@ -28,5 +28,9 @@ export const LogoImage = styled.img`
 export const AnchorItem = styled(Link)`
   color: white;
   text-decoration: none;
+  padding: 5px;
   font-weight: bold;
+  &:hover {
+    border-bottom: 1px solid white;
+  }
 `;

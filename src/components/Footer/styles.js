@@ -7,3 +7,7 @@ export const FooterContainer = styled.footer`
   justify-content: space-between;
   padding: 0 5%;
 `;
+
+export const AuthorInformation = styled.div`
+  display: flex;
+`;
