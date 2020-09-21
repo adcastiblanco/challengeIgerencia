@@ -11,3 +11,15 @@ export const FooterContainer = styled.footer`
 export const AuthorInformation = styled.div`
   display: flex;
 `;
+
+export const SocialMedia = styled.div`
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+`;
+
+export const ItemSocialMedia = styled.a`
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+`;
